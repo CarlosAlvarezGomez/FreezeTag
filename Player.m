@@ -2,8 +2,9 @@ classdef Player < handle
     
     properties
         position % Vector containing x and y coordinates of the current position
-        state % Either Freezer, Frozen, or Running
+        state % Either Freezer, Frozen, Running, Separating1, or Separating2
         speed
+        separationSteps
     end
     
     methods

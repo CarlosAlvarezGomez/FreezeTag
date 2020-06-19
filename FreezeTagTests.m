@@ -65,5 +65,54 @@ p3.position = [1.5001,0];
 
 assert(all(p1.pickDirection(runnerArray, p3) == [1, 0]));
 
+%Checks that separating points are moving away from each other at the right
+%angle
+p1.state = 'Separating1';
+p1.position = [0,0];
+p2.state = 'Separating2';
+p2.position = [0,0];
+p3.position = [1,1];
+
+
+x = p1.pickDirection(runnerArray, p3, 30);
+
+assert(all(p1.pickDirection(runnerArray, p3, 30) == [-0.5,round(-sqrt(3)/2,6)]));
+assert(all(p2.pickDirection(runnerArray, p3, 30) == [round(-sqrt(3)/2,6),-0.5,]));
+
+p3.position = [0,1];
+
+assert(all(p1.pickDirection(runnerArray, p3, 90) == [round(sqrt(2)/2,6), round(-sqrt(2)/2,6)]));
+assert(all(p2.pickDirection(runnerArray, p3, 90) == [round(-sqrt(2)/2,6), round(-sqrt(2)/2,6)]));
+
+p3.position = [-1,1];
+
+assert(all(p1.pickDirection(runnerArray, p3, 90) == [1,0]));
+assert(all(p2.pickDirection(runnerArray, p3, 90) == [0,-1]));
+
+p3.position = [-1,0];
+
+assert(all(p1.pickDirection(runnerArray, p3, 90) == [round(sqrt(2)/2,6), round(sqrt(2)/2,6)]));
+assert(all(p2.pickDirection(runnerArray, p3, 90) == [round(sqrt(2)/2,6), round(-sqrt(2)/2,6)]));
+
+p3.position = [-1,-1];
+
+assert(all(p1.pickDirection(runnerArray, p3, 90) == [0,1]));
+assert(all(p2.pickDirection(runnerArray, p3, 90) == [1,0]));
+
+p3.position = [0,-1];
+
+assert(all(p1.pickDirection(runnerArray, p3, 90) == [round(-sqrt(2)/2,6), round(sqrt(2)/2,6)]));
+assert(all(p2.pickDirection(runnerArray, p3, 90) == [round(sqrt(2)/2,6), round(sqrt(2)/2,6)]));
+
+p3.position = [1,-1];
+
+assert(all(p1.pickDirection(runnerArray, p3, 90) == [-1,0]));
+assert(all(p2.pickDirection(runnerArray, p3, 90) == [0,1]));
+
+p3.position = [1,0];
+
+assert(all(p1.pickDirection(runnerArray, p3, 90) == [round(-sqrt(2)/2,6), round(-sqrt(2)/2,6)]));
+assert(all(p2.pickDirection(runnerArray, p3, 90) == [round(-sqrt(2)/2,6), round(sqrt(2)/2,6)]));
+
 fprintf('pickDirection tests passed\n')
 

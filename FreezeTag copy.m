@@ -1,9 +1,9 @@
 % Runs a simulation of a game of freeze tag that only ends if all the
 % Runners are frozen
 
-numRunners = 30;
+numRunners = 3;
 runnerSpeed = 1;
-freezerSpeed = 5;
+freezerSpeed = 1.25;
 freezeRadius = freezerSpeed;
 unfreezeRadius = runnerSpeed;
 maxX = 100;
@@ -17,14 +17,22 @@ separationSteps = 50;
 
 % Creates a runnerArray, where each Runner starts at a random position
 runnerArray = cell(1,numRunners);
-for i = 1:numRunners
-    position = [(maxX - minX)*rand + minX, (maxY - minY)*rand + minY];
-    runnerArray{i} = Runner(position, runnerSpeed, 'Running');
-end
+position1 = [-5, -2];
+runnerArray{1} = Runner(position1, runnerSpeed, 'Running');
+position2 = [0, 10];
+runnerArray{2} = Runner(position2, runnerSpeed, 'Running');
+position3 = [5,-2]; 
+runnerArray{3} = Runner(position3, runnerSpeed, 'Running');
+%for i = 1:numRunners
+    %position = [(maxX - minX)*rand + minX, (maxY - minY)*rand + minY];
+    %runnerArray{i} = Runner(position, runnerSpeed, 'Running');
+%end
 
 % Creates the Freezer, starting at the center of the plot
-position = [(maxX - minX)*rand + minX, (maxY - minY)*rand + minY];
-freezer = Freezer(position, freezerSpeed, 'Freezer');
+%position = [(maxX - minX)*rand + minX, (maxY - minY)*rand + minY];
+positionf = [0,0];
+freezer = Freezer(positionf, freezerSpeed, 'Freezer');
+
 
 % Creates plot
 figure
@@ -96,7 +104,7 @@ while (currentRunners ~= 0)
     end
     
     
-    pause(0.0001);
+    pause(.0001);
     %Plots adjusts the axis, time, and changes title
     totalTime = totalTime + deltaTime;
     message = sprintf('Time = %3.2f', totalTime);

@@ -1,15 +1,11 @@
 classdef Freezer < Player
     
     methods
-        function direction = pickDirection(self, runnerArray, freezer, deltaTime, boundaries)
+        function direction = pickDirection(self, runnerArray, deltaTime)
             % Returns the direction that the freezer should run in.
             % playerArray is an array containing all the players in the
             % game. The freezer runs in the direction of the closest player
             % that is Running
-            minX = boundaries(1);
-            maxX = boundaries(2);
-            minY = boundaries(3);
-            maxY = boundaries(4);
             
             % Initializes direction and minDistance
             direction = [0, 0];
@@ -19,8 +15,8 @@ classdef Freezer < Player
             for i = 1:length(runnerArray)
                 p = runnerArray{i};
                 
-                %Checks if the current player is running
-                if (strcmp(p.state,'Running'))
+                %Checks if the current player is not frozen
+                if (~strcmp(p.state,'Frozen'))
                     dist = distance(self.position, p.position);
                     
                     % Changes the direction and minDistance if this is the

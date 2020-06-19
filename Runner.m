@@ -1,15 +1,15 @@
 classdef Runner < Player
     
     methods
-        function direction = pickDirection(self, runnerArray, freezer, deltaTime, boundaries)
-            % Returns the direction that the freezer should run in.
+        function direction = pickDirection(self, runnerArray, freezer, separationAngle)
+            % Returns the direction that the runner should run in.
             % playerArray is an array containing all the players in the
-            % game. The freezer runs in the direction of the closest player
-            % that is Running
-            minX = boundaries(1);
-            maxX = boundaries(2);
-            minY = boundaries(3);
-            maxY = boundaries(4);
+            % game. If the state is Frozen, the runner will not move. If the
+            % state is Running, the runner will either move in the opposite
+            % direction of the Freezer or towards a Frozen runner. If the state 
+            % Separating1 or Separating 2, then the runner will move in the
+            % same direction as if it were Running, but the direction will
+            % be offset by separationAngle/2.
             
             % Stay in place if frozen
             if (strcmp(self.state, 'Frozen'))
@@ -42,11 +42,7 @@ classdef Runner < Player
                             if (distFromFrozen < minDistFromFrozen)
                                 minDistFromFrozen = distFromFrozen;
                                 unscaledDirection = p.position - self.position;
-                                %                                 if (distFromFrozen < self.speed*deltaTime)
-                                %                                     direction = unscaledDirection/self.speed * deltaTime;
-                                %                                 else
                                 direction = unscaledDirection/norm(unscaledDirection);
-                                %                                 end
                             end
                         end
                     end
@@ -57,6 +53,18 @@ classdef Runner < Player
                 if (~canReachFrozen)
                     unscaledDirection = self.position - freezer.position;
                     direction = unscaledDirection/norm(unscaledDirection);
+                end
+                % Offset the direction if separating
+                if (strcmp(self.state, 'Separating1'))
+                    [theta, rad] = cartesian2Polar(direction(1), direction(2));
+                    theta = rem(theta + separationAngle/2,360);
+                    [x, y] = polar2Cartesian(theta, rad);
+                    direction = [x, y];
+                elseif(strcmp(self.state, 'Separating2'))
+                    [theta, rad] = cartesian2Polar(direction(1), direction(2));
+                    theta = rem((theta - separationAngle/2)+360,360);
+                    [x, y] = polar2Cartesian(theta, rad);
+                    direction = [x, y];
                 end
             end
         end
